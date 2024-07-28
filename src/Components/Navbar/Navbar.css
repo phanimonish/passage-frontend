@@ -1,0 +1,73 @@
+.navbar {
+  background-color: #fff !important;
+  box-shadow: none !important;
+  background: #fff;
+  color: #000 !important;
+  padding: 0% !important;
+}
+.logo {
+  font-size: 1.75rem;
+  font-family: sans-serif;
+}
+.navbar-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f2f2f2;
+}
+.contact-icon {
+  color: black !important;
+  width: 1rem !important;
+}
+.nav-left-content {
+  display: flex;
+  align-items: center;
+  width: 25rem;
+  justify-content: space-between;
+  height: 55px !important;
+}
+.nav-right-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.search-container {
+  width: 65%;
+  height: 3rem;
+  background: #f9f9f9;
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 0.5rem;
+}
+.search-input {
+  height: 2.5rem;
+  width: 85%;
+  border: none;
+  background: transparent;
+  border-radius: 2rem;
+}
+.search-input:focus {
+  outline: none;
+}
+.write-btn {
+  background-color: transparent !important;
+  color: black !important;
+  text-transform: inherit !important;
+  box-shadow: none !important;
+}
+.notifications {
+  background-color: transparent !important;
+  color: black !important;
+  text-transform: inherit !important;
+  box-shadow: none !important;
+}
+@media only screen and (max-width: 900px) {
+  .write-btn {
+    display: none !important;
+  }
+  .notifications {
+    display: none !important;
+  }
+}

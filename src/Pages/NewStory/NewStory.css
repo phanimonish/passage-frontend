@@ -1,0 +1,51 @@
+.new-story {
+  padding: 0rem 7rem;
+  height: auto !important;
+}
+.vertical-divider {
+  color: black !important;
+  height: 55px !important;
+  margin-left: 80px !important;
+}
+.title {
+  height: 60px !important;
+  display: flex !important;
+  padding: 2rem 5rem;
+  padding-bottom: 1rem;
+}
+.title-input {
+  height: 50px !important;
+  width: 90%;
+  margin-left: 10px !important;
+  border: none;
+  font-family: "Times New Roman", Times, serif !important;
+  font-size: 2.5rem;
+}
+::placeholder {
+  color: rgb(190, 189, 189);
+}
+.title-input:focus {
+  outline: none;
+}
+.story-input {
+  width: 90%;
+  margin-left: 94px !important;
+  border: none;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  padding: 1rem 0rem;
+  font-family: "Times New Roman", Times, serif !important;
+  resize: none;
+}
+.story-input::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+.story-input:focus {
+  outline: none;
+}
+.story {
+  display: flex !important;
+  height: auto !important;
+  padding: 0rem 5rem;
+}
