@@ -22,9 +22,9 @@ function Navbar() {
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-  };
+  };                                                                                                      
   const handleClose = () => {
-    setAnchorEl(null);
+    setAnchorEl(null);                                                                    
   };
   return (
     <AppBar className="navbar" position="static">

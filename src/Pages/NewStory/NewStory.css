@@ -10,8 +10,8 @@
 .title {
   height: 60px !important;
   display: flex !important;
-  padding: 2rem 5rem;
   padding-bottom: 1rem;
+  padding: 2rem 0rem;
 }
 .title-input {
   height: 50px !important;
@@ -29,9 +29,9 @@
 }
 .story-input {
   width: 90%;
-  margin-left: 94px !important;
   border: none;
   font-size: 1.25rem;
+  margin-left: 10px !important;
   display: flex;
   align-items: center;
   padding: 1rem 0rem;
@@ -47,5 +47,15 @@
 .story {
   display: flex !important;
   height: auto !important;
-  padding: 0rem 5rem;
+}
+
+.story-content {
+  padding: 0rem 5rem !important;
+}
+.publish-btn{
+  background: #1a8917 !important;
+  color: #fff !important;
+  text-transform: inherit !important;
+  border-radius: 2rem !important;
+  padding: 0% !important;
 }

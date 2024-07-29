@@ -8,7 +8,7 @@ import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import PrintIcon from "@mui/icons-material/Print";
 import ShareIcon from "@mui/icons-material/Share";
-import "./SpeedDial.css"
+import "./SpeedDial.css";
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   position: "absolute",
@@ -23,10 +23,10 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 }));
 
 const actions = [
-  { icon: <FileCopyIcon />, name: "Copy" },
-  { icon: <SaveIcon />, name: "Save" },
-  { icon: <PrintIcon />, name: "Print" },
-  { icon: <ShareIcon />, name: "Share" },
+  { icon: <FileCopyIcon className="speed-dial-item" />, name: "Copy" },
+  { icon: <SaveIcon className="speed-dial-item" />, name: "Save" },
+  { icon: <PrintIcon className="speed-dial-item" />, name: "Print" },
+  { icon: <ShareIcon className="speed-dial-item" />, name: "Share" },
 ];
 
 export default function PlaygroundSpeedDial() {

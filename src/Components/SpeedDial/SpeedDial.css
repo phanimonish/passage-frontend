@@ -2,13 +2,17 @@
   background-color: transparent !important;
   box-shadow: none !important;
   border: 1px solid grey !important;
-  width: 48px !important;
-  height: 48px !important;
+  width: 40px !important;
+  height: 40px !important;
   margin: 0% !important;
   padding: 0% !important;
 }
 .MuiSpeedDialIcon-icon {
   color: #000;
+}
+.speed-dial-item {
+  width: 20px !important;
+  height: 20px !important;
 }
 .MuiSpeedDial-root {
   position: absolute !important;

@@ -18,6 +18,7 @@ import Logout from "@mui/icons-material/Logout";
 import "./NewStory.css";
 import SpeedDial from "../../Components/SpeedDial/SpeedDial";
 import { useState } from "react";
+import TextareaAutosize from "react-textarea-autosize";
 
 export default function NewStory() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -39,6 +40,9 @@ export default function NewStory() {
                 <h2 className="logo">Passage</h2>
               </div>
               <div className="nav-right-content">
+                <Button className="publish-btn" variant="outlined">
+                  Publish
+                </Button>
                 <Button className="write-btn" variant="contained">
                   <svg class="svgIcon-use" width="25" height="25">
                     <path
@@ -154,19 +158,25 @@ export default function NewStory() {
           </Container>
         </AppBar>
       </div>
+      <div className="story-content">
+        <div className="title">
+          {show && <SpeedDial className="" />}
+          <Divider className="vertical-divider" orientation="vertical" />
+          <input
+            onClick={() => setShow((prev) => !prev)}
+            placeholder="Title"
+            className="title-input"
+          />
+        </div>
+        <div className="story">
+          <SpeedDial />
+          <Divider className="vertical-divider" orientation="vertical" />
 
-      <div className="title">
-        {show && <SpeedDial />}
-        <Divider className="vertical-divider" orientation="vertical" />
-        <input
-          onClick={() => setShow((prev) => !prev)}
-          placeholder="Title"
-          className="title-input"
-        />
-      </div>
-      <div className="story">
-        <SpeedDial />
-        <textarea placeholder="Tell your story..." className="story-input" />
+          <TextareaAutosize
+            placeholder="Tell your story"
+            className="story-input"
+          />
+        </div>
       </div>
     </div>
   );
