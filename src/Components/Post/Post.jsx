@@ -76,7 +76,7 @@ export default function Post({ post }) {
           </div>
           <div className="post-image-container">
             <img
-              src={`http://localhost:5000/${post.imageUrl}`}
+              src={`https://passage-backend.onrender.com/${post.imageUrl}`}
               alt={post.title}
               className="post-image"
             />
