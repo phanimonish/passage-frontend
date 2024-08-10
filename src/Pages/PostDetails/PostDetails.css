@@ -1,0 +1,13 @@
+.post-details-container {
+  padding: 2rem 23%;
+}
+.post-details-title {
+  font-size: 2.5rem;
+}
+.post-details-image {
+  width: 100%;
+  height: auto;
+}
+.post-details-description {
+  line-height: 1.5rem !important;
+}

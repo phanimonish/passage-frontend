@@ -1,0 +1,44 @@
+.register {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.register-form {
+  width: 360px;
+  height: 450px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  text-align: center;
+  border-radius: 1rem;
+  padding: 0.5rem 0rem;
+}
+.inputs {
+  margin: 0.5rem !important;
+  width: 85%;
+  height: 3rem !important;
+}
+.signup-btn {
+  width: 85%;
+  height: 3rem;
+  margin: 1rem !important;
+  background: #000 !important;
+  color: #fff !important;
+  text-transform: inherit !important;
+}
+.login-btn {
+  width: 85%;
+  height: 3rem;
+  margin: 1rem !important;
+  border-color: #000 !important;
+  color: #000 !important;
+  text-transform: inherit !important;
+}
+.or {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dividers {
+  width: 8rem;
+}

@@ -8,14 +8,11 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Post from "../../Components/Post/Post";
 import Picks from "../../Components/Picks/Picks";
 import Chip from "@mui/material/Chip";
-
-import {
-  Posts,
-  FollowingPosts,
-  JavascriptPosts,
-  ReactPosts,
-  WebDevelopmentPosts,
-} from "../../Components/Data";
+import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import PropTypes from "prop-types";
 
@@ -49,10 +46,28 @@ function a11yProps(index) {
 }
 
 export default function HomePage() {
-  const [value, setValue] = React.useState(0);
+  const [posts, setPosts] = useState([]);
+  const [value, setValue] = useState(0);
+  const navigate = useNavigate();
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  axios.defaults.withCredentials = true;
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (!token) {
+      navigate("/");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_API_BASE_URL}/posts`).then((res) => {
+      setPosts(res.data.reverse());
+    });
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -68,7 +83,9 @@ export default function HomePage() {
               }}
             >
               <div style={{ display: "flex" }}>
-                <AddRoundedIcon className="add-icon" />
+                <Link className="add-icon" to="/new-story">
+                  <AddRoundedIcon />
+                </Link>
                 <Tabs
                   value={value}
                   onChange={handleChange}
@@ -83,7 +100,7 @@ export default function HomePage() {
                   />
                   <Tab
                     className="text-form"
-                    label="Following"
+                    label="Originals"
                     {...a11yProps(1)}
                   />
                   <Tab
@@ -102,37 +119,37 @@ export default function HomePage() {
             </Box>
             <CustomTabPanel style={{ padding: "0%" }} value={value} index={0}>
               <div className="blog-posts">
-                {Posts.map((post) => {
-                  return <Post post={post} />;
-                })}
+                {posts.map((post) => (
+                  <Post key={post.id} post={post} />
+                ))}
               </div>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
               <div className="blog-posts">
-                {FollowingPosts.map((post) => {
-                  return <Post post={post} />;
-                })}
+                {posts.map((post) => (
+                  <Post key={post.id} post={post} />
+                ))}
               </div>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
               <div className="blog-posts">
-                {JavascriptPosts.map((post) => {
-                  return <Post post={post} />;
-                })}
+                {posts.map((post) => (
+                  <Post key={post.id} post={post} />
+                ))}
               </div>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={3}>
               <div className="blog-posts">
-                {ReactPosts.map((post) => {
-                  return <Post post={post} />;
-                })}
+                {posts.map((post) => (
+                  <Post key={post.id} post={post} />
+                ))}
               </div>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={4}>
               <div className="blog-posts">
-                {WebDevelopmentPosts.map((post) => {
-                  return <Post post={post} />;
-                })}
+                {posts.map((post) => (
+                  <Post key={post.id} post={post} />
+                ))}
               </div>
             </CustomTabPanel>
           </Box>
@@ -140,9 +157,9 @@ export default function HomePage() {
         <div className="home-suggestions-container">
           <h3>Staff Picks</h3>
           <div>
-            {WebDevelopmentPosts.map((post) => {
-              return <Picks post={post} />;
-            })}
+            {posts.slice(0, 2).map((post) => (
+              <Picks key={post.id} post={post} />
+            ))}
           </div>
           <span className="picks-btn">see the full list</span>
           <div className="recommended-topics">
@@ -160,10 +177,10 @@ export default function HomePage() {
           </div>
           <div>
             <h3>Reading list</h3>
-            <p5>
+            <p>
               Click the post on any story to easily view the post and make a
               custom list that you can share.
-            </p5>
+            </p>
           </div>
         </div>
       </div>

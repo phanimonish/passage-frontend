@@ -18,10 +18,29 @@ import Logout from "@mui/icons-material/Logout";
 import "./NewStory.css";
 import SpeedDial from "../../Components/SpeedDial/SpeedDial";
 import { useState } from "react";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import TextareaAutosize from "react-textarea-autosize";
+import ImageUploader from "../../Components/ImageUploader/ImageUploader";
 
 export default function NewStory() {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [imageFile, setImageFile] = useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const navigate = useNavigate();
+
+  axios.defaults.withCredentials = true;
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (!token) {
+      navigate("/");
+    }
+  }, [navigate]);
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -29,7 +48,33 @@ export default function NewStory() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const [show, setShow] = useState(false);
+  const [showTitle, setShowTitle] = useState(false);
+  const [showStory, setShowStory] = useState(false);
+
+  const handlePost = async (e) => {
+    e.preventDefault();
+    const decode = jwtDecode(Cookies.get("token"));
+    const username = decode.username;
+  
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("username", username);
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+  
+    try {
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/post`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      navigate("/home");
+    } catch (error) {
+      console.error("Error posting data:", error.response || error.message);
+    }
+  };
   return (
     <div className="new-story">
       <div>
@@ -40,7 +85,11 @@ export default function NewStory() {
                 <h2 className="logo">Passage</h2>
               </div>
               <div className="nav-right-content">
-                <Button className="publish-btn" variant="outlined">
+                <Button
+                  className="publish-btn"
+                  onClick={handlePost}
+                  variant="outlined"
+                >
                   Publish
                 </Button>
                 <Button className="write-btn" variant="contained">
@@ -159,22 +208,31 @@ export default function NewStory() {
         </AppBar>
       </div>
       <div className="story-content">
+        <ImageUploader  onFileSelect={(file) => setImageFile(file)}/>
         <div className="title">
-          {show && <SpeedDial className="" />}
-          <Divider className="vertical-divider" orientation="vertical" />
+          {showTitle && <SpeedDial className="" />}
+          {showTitle && (
+            <Divider className="vertical-divider" orientation="vertical" />
+          )}
           <input
-            onClick={() => setShow((prev) => !prev)}
+            onClick={() => setShowTitle((prev) => !prev)}
             placeholder="Title"
             className="title-input"
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         <div className="story">
-          <SpeedDial />
-          <Divider className="vertical-divider" orientation="vertical" />
+          {showStory && <SpeedDial className="" />}
+          {showStory && (
+            <Divider className="vertical-divider" orientation="vertical" />
+          )}
 
           <TextareaAutosize
+            onClick={() => setShowStory((prev) => !prev)}
+            contentEditable="true"
             placeholder="Tell your story"
             className="story-input"
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
       </div>

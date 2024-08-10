@@ -1,0 +1,12 @@
+.login-btn {
+  border-color: #000 !important;
+  color: #000 !important;
+}
+.login-btn:hover {
+  background: #000 !important;
+  color: #fff !important;
+}
+.login-btn:focus {
+  background: #000 !important;
+  color: #fff !important;
+}
