@@ -6,7 +6,7 @@
   padding: 0% !important;
 }
 .logo {
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-family: sans-serif;
   color: #000;
   text-decoration: none !important;
@@ -24,7 +24,6 @@
 .nav-left-content {
   display: flex;
   align-items: center;
-  width: 25rem;
   justify-content: space-between;
   height: 55px !important;
 }
