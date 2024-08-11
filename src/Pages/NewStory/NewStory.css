@@ -65,3 +65,13 @@
   content: attr(data-text);
   color: rgb(190, 189, 189);
 }
+
+@media only screen and (max-width: 900px) {
+  .new-story {
+    padding: 0rem;
+    height: auto !important;
+  }
+  .story-content {
+    padding: 0rem !important;
+  }
+}
