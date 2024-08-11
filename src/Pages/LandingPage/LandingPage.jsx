@@ -67,7 +67,7 @@ export default function LandingPage() {
         <Container maxWidth="xl">
           <Toolbar className="navbar-box" disableGutters>
             <div className="nav-left-content">
-              <h2 className="logo">Passage</h2>
+              <h1 className="logo">Passage</h1>
             </div>
             <div className="nav-right-content">
               <Button className="login-btn" href="/login" variant="outlined">
