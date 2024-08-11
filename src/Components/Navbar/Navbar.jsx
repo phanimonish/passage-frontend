@@ -40,7 +40,7 @@ function Navbar() {
         <Toolbar className="navbar-box" disableGutters>
           <div className="nav-left-content">
             <Link className="logo" to="/home">
-              <h2 >Passage</h2>
+              <h2 className="logo">Passage</h2>
             </Link>
             <div className="search-container">
               <svg
