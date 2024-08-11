@@ -52,7 +52,7 @@ export default function Login() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, {
+    fetch(`https://passage-backend.onrender.com/api/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

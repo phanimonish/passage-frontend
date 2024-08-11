@@ -65,7 +65,7 @@ export default function NewStory() {
     }
   
     try {
-      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/post`, formData, {
+      await axios.post(`https://passage-backend.onrender.com/api/post`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

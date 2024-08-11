@@ -63,7 +63,7 @@ export default function HomePage() {
   }, [navigate]);
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_BASE_URL}/posts`).then((res) => {
+    axios.get(`https://passage-backend.onrender.com/api/posts`).then((res) => {
       setPosts(res.data.reverse());
     });
   }, []);

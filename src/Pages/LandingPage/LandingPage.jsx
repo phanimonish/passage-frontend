@@ -57,7 +57,7 @@ export default function LandingPage() {
     setValue(newValue);
   };
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_BASE_URL}/posts`).then((res) => {
+    axios.get(`https://passage-backend.onrender.com/api/posts`).then((res) => {
       setPosts(res.data.reverse());
     });
   }, []);
@@ -78,88 +78,88 @@ export default function LandingPage() {
         </Container>
       </AppBar>
       <div className="home-container">
-      <div className="home-blog-posts">
-      <Box>
-        <Box
-          className="tabs"
-          sx={{
-            borderBottom: 1,
-            borderColor: "divider",
-            padding: 0,
-          }}
-        >
-          <div style={{ display: "flex" }}>
-            <Link className="add-icon" to="/new-story">
-              <AddRoundedIcon />
-            </Link>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="basic tabs example"
-              variant="scrollable"
-              scrollButtons="auto"
+        <div className="home-blog-posts">
+          <Box>
+            <Box
+              className="tabs"
+              sx={{
+                borderBottom: 1,
+                borderColor: "divider",
+                padding: 0,
+              }}
             >
-              <Tab
-                className="text-form"
-                label="For you"
-                {...a11yProps(0)}
-              />
-              <Tab
-                className="text-form"
-                label="Originals"
-                {...a11yProps(1)}
-              />
-              <Tab
-                className="text-form"
-                label="Javascript"
-                {...a11yProps(2)}
-              />
-              <Tab className="text-form" label="React" {...a11yProps(3)} />
-              <Tab
-                className="text-form"
-                label="Web Development"
-                {...a11yProps(4)}
-              />
-            </Tabs>
-          </div>
-        </Box>
-        <CustomTabPanel style={{ padding: "0%" }} value={value} index={0}>
-          <div className="blog-posts">
-            {posts.map((post) => (
-              <Post key={post.id} post={post} />
-            ))}
-          </div>
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
-          <div className="blog-posts">
-            {posts.map((post) => (
-              <Post key={post.id} post={post} />
-            ))}
-          </div>
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          <div className="blog-posts">
-            {posts.map((post) => (
-              <Post key={post.id} post={post} />
-            ))}
-          </div>
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={3}>
-          <div className="blog-posts">
-            {posts.map((post) => (
-              <Post key={post.id} post={post} />
-            ))}
-          </div>
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={4}>
-          <div className="blog-posts">
-            {posts.map((post) => (
-              <Post key={post.id} post={post} />
-            ))}
-          </div>
-        </CustomTabPanel>
-      </Box>
-    </div>
+              <div style={{ display: "flex" }}>
+                <Link className="add-icon" to="/new-story">
+                  <AddRoundedIcon />
+                </Link>
+                <Tabs
+                  value={value}
+                  onChange={handleChange}
+                  aria-label="basic tabs example"
+                  variant="scrollable"
+                  scrollButtons="auto"
+                >
+                  <Tab
+                    className="text-form"
+                    label="For you"
+                    {...a11yProps(0)}
+                  />
+                  <Tab
+                    className="text-form"
+                    label="Originals"
+                    {...a11yProps(1)}
+                  />
+                  <Tab
+                    className="text-form"
+                    label="Javascript"
+                    {...a11yProps(2)}
+                  />
+                  <Tab className="text-form" label="React" {...a11yProps(3)} />
+                  <Tab
+                    className="text-form"
+                    label="Web Development"
+                    {...a11yProps(4)}
+                  />
+                </Tabs>
+              </div>
+            </Box>
+            <CustomTabPanel style={{ padding: "0%" }} value={value} index={0}>
+              <div className="blog-posts">
+                {posts.map((post) => (
+                  <Post key={post.id} post={post} />
+                ))}
+              </div>
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={1}>
+              <div className="blog-posts">
+                {posts.map((post) => (
+                  <Post key={post.id} post={post} />
+                ))}
+              </div>
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={2}>
+              <div className="blog-posts">
+                {posts.map((post) => (
+                  <Post key={post.id} post={post} />
+                ))}
+              </div>
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={3}>
+              <div className="blog-posts">
+                {posts.map((post) => (
+                  <Post key={post.id} post={post} />
+                ))}
+              </div>
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={4}>
+              <div className="blog-posts">
+                {posts.map((post) => (
+                  <Post key={post.id} post={post} />
+                ))}
+              </div>
+            </CustomTabPanel>
+          </Box>
+        </div>
         <div className="home-suggestions-container">
           <h3>Staff Picks</h3>
           <div>

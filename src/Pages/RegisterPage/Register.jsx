@@ -55,7 +55,7 @@ export default function Register() {
   function handleSubmit(e) {
     e.preventDefault();
     console.log(JSON.stringify({ username, password, email }));
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/register`, {
+    fetch(`https://passage-backend.onrender.com/api/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
