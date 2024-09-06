@@ -5,7 +5,7 @@ import "./PostDetails.css";
 import Navbar from "../../Components/Navbar/Navbar";
 import Avatar from "@mui/material/Avatar";
 import { Divider } from "@mui/material";
-import CircularProgress from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function PostDetails() {
   const location = useLocation();
