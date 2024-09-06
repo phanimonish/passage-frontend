@@ -31,7 +31,7 @@
 .post-details-left {
   display: flex;
   align-items: center;
-  width: 35%;
+  width: 10rem;
   justify-content: space-between;
 }
 .post-description {
@@ -49,6 +49,9 @@
   display: flex;
   padding: 0px 0px 0px 10px;
 }
+.css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root.Mui-focused .MuiOutlinedInput-notchedOutline{
+  border-color: grey !important;
+}
 @media only screen and (max-width: 900px) {
   .post-image {
     height: 100px !important;
@@ -56,8 +59,5 @@
   }
   .post-left {
     width: 80% !important;
-  }
-  .post-details-left {
-    width: 75% !important;
   }
 }

@@ -25,6 +25,9 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import TextareaAutosize from "react-textarea-autosize";
 import ImageUploader from "../../Components/ImageUploader/ImageUploader";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 export default function NewStory() {
   const [title, setTitle] = useState("");
@@ -41,6 +44,13 @@ export default function NewStory() {
     }
   }, [navigate]);
 
+  const [category, setCategory] = React.useState("");
+
+  const handleChange = (event) => {
+    setCategory(event.target.value);
+    console.log(event.target.value);
+  };
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -55,15 +65,16 @@ export default function NewStory() {
     e.preventDefault();
     const decode = jwtDecode(Cookies.get("token"));
     const username = decode.username;
-  
+
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
     formData.append("username", username);
+    formData.append("category", category);
     if (imageFile) {
       formData.append("image", imageFile);
     }
-  
+
     try {
       await axios.post(`https://passage-backend.onrender.com/api/post`, formData, {
         headers: {
@@ -74,6 +85,11 @@ export default function NewStory() {
     } catch (error) {
       console.error("Error posting data:", error.response || error.message);
     }
+  };
+  const handleLogout = () => {
+    Cookies.remove("token");
+    navigate("/");
+    navigate(0);
   };
   return (
     <div className="new-story">
@@ -195,7 +211,7 @@ export default function NewStory() {
                     </ListItemIcon>
                     Settings
                   </MenuItem>
-                  <MenuItem onClick={handleClose}>
+                  <MenuItem onClick={handleLogout}>
                     <ListItemIcon>
                       <Logout fontSize="small" />
                     </ListItemIcon>
@@ -208,7 +224,27 @@ export default function NewStory() {
         </AppBar>
       </div>
       <div className="story-content">
-        <ImageUploader  onFileSelect={(file) => setImageFile(file)}/>
+        <Box className="category-box">
+          <FormControl sx={{ minWidth: 180 }} size="small">
+            <InputLabel className="label" id="demo-simple-select-label">
+              Select category
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={category}
+              label="Select category"
+              onChange={handleChange}
+            >
+              <MenuItem value={"originals"}>Originals</MenuItem>
+              <MenuItem value={"javascript"}>Javascript</MenuItem>
+              <MenuItem value={"react"}>React</MenuItem>
+              <MenuItem value={"web development"}>Web Development</MenuItem>
+              <MenuItem value={"others"}>Others</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+        <ImageUploader onFileSelect={(file) => setImageFile(file)} />
         <div className="title">
           {showTitle && <SpeedDial className="" />}
           {showTitle && (

@@ -1,5 +1,5 @@
-import React from "react";
-import "../../Pages/HomePage/HomePage.css";
+import React, { useEffect, useState } from "react";
+import "../HomePage/HomePage.css";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -8,17 +8,10 @@ import Post from "../../Components/Post/Post";
 import Picks from "../../Components/Picks/Picks";
 import Chip from "@mui/material/Chip";
 import { Link } from "react-router-dom";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
-import "../../Components/Navbar/Navbar.css";
-import "../NewStory/NewStory.css";
-import "./LandingPage.css";
 import axios from "axios";
-import { useEffect, useState } from "react";
-
+import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
+import { AppBar, Container, Toolbar, Button } from "@mui/material";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -49,28 +42,77 @@ function a11yProps(index) {
   };
 }
 
-export default function LandingPage() {
-  const [value, setValue] = React.useState(0);
+export default function HomePage() {
   const [posts, setPosts] = useState([]);
+  const [value, setValue] = useState(0); // Active tab index
+  const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const getCategoryFromIndex = (index) => {
+    switch (index) {
+      case 0:
+        return null; // "For you"
+      case 1:
+        return "originals";
+      case 2:
+        return "javascript";
+      case 3:
+        return "react";
+      case 4:
+        return "web development";
+      default:
+        return null;
+    }
+  };
+
+  const getIndexFromCategory = (category) => {
+    switch (category) {
+      case "originals":
+        return 1;
+      case "javascript":
+        return 2;
+      case "react":
+        return 3;
+      case "web development":
+        return 4;
+      default:
+        return 0; // "For you"
+    }
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setSelectedCategory(getCategoryFromIndex(newValue));
   };
+
+  const handleChipClick = (category) => {
+    const index = getIndexFromCategory(category);
+    setValue(index); // Set the active tab index
+    setSelectedCategory(category); // Set the category to load posts for
+  };
+
   useEffect(() => {
-    axios.get(`https://passage-backend.onrender.com/api/posts`).then((res) => {
-      setPosts(res.data.reverse());
-    });
-  }, []);
+    setLoading(true);
+    axios
+      .get(`https://passage-backend.onrender.com/api/posts`, {
+        params: { category: selectedCategory },
+      })
+      .then((res) => {
+        setPosts(res.data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [selectedCategory]);
   return (
     <div>
       <AppBar className="navbar" position="static">
         <Container maxWidth="xl">
           <Toolbar className="navbar-box" disableGutters>
-            <div className="nav-left-content">
+            <div className="nav-left-content" style={{width: "60%"}}>
               <h2 className="logo">Passage</h2>
             </div>
             <div className="nav-right-content">
-              <Button className="login-btn" href="/login" variant="outlined">
+              <Button className="login-btn" href="/login" variant="outlined" >
                 Log In
               </Button>
             </div>
@@ -103,84 +145,133 @@ export default function LandingPage() {
                     className="text-form"
                     label="For you"
                     {...a11yProps(0)}
+                    sx={{
+                      fontWeight: value === 0 ? 'bold' : 'normal',
+                    }}
                   />
                   <Tab
                     className="text-form"
                     label="Originals"
                     {...a11yProps(1)}
+                    sx={{
+                      fontWeight: value === 1 ? 'bold' : 'normal',
+                    }}
                   />
                   <Tab
                     className="text-form"
                     label="Javascript"
                     {...a11yProps(2)}
+                    sx={{
+                      fontWeight: value === 2 ? 'bold' : 'normal',
+                    }}
                   />
-                  <Tab className="text-form" label="React" {...a11yProps(3)} />
+                  <Tab
+                    className="text-form"
+                    label="React"
+                    {...a11yProps(3)}
+                    sx={{
+                      fontWeight: value === 3 ? 'bold' : 'normal',
+                    }}
+                  />
                   <Tab
                     className="text-form"
                     label="Web Development"
                     {...a11yProps(4)}
+                    sx={{
+                      fontWeight: value === 4 ? 'bold' : 'normal',
+                    }}
                   />
                 </Tabs>
               </div>
             </Box>
-            <CustomTabPanel style={{ padding: "0%" }} value={value} index={0}>
-              <div className="blog-posts">
-                {posts.map((post) => (
-                  <Post key={post.id} post={post} />
-                ))}
+
+            {loading ? (
+              <div
+                className="homepage-posts"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <CircularProgress />
               </div>
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={1}>
-              <div className="blog-posts">
-                {posts.map((post) => (
-                  <Post key={post.id} post={post} />
-                ))}
+            ) : (
+              <div>
+                <CustomTabPanel value={value} index={0}>
+                  <div className="blog-posts">
+                    {posts.map((post) => (
+                      <Post key={post._id} post={post} />
+                    ))}
+                  </div>
+                </CustomTabPanel>
+                <CustomTabPanel value={value} index={1}>
+                  <div className="blog-posts">
+                    {posts.map((post) => (
+                      <Post key={post._id} post={post} />
+                    ))}
+                  </div>
+                </CustomTabPanel>
+                <CustomTabPanel value={value} index={2}>
+                  <div className="blog-posts">
+                    {posts.map((post) => (
+                      <Post key={post._id} post={post} />
+                    ))}
+                  </div>
+                </CustomTabPanel>
+                <CustomTabPanel value={value} index={3}>
+                  <div className="blog-posts">
+                    {posts.map((post) => (
+                      <Post key={post._id} post={post} />
+                    ))}
+                  </div>
+                </CustomTabPanel>
+                <CustomTabPanel value={value} index={4}>
+                  <div className="blog-posts">
+                    {posts.map((post) => (
+                      <Post key={post._id} post={post} />
+                    ))}
+                  </div>
+                </CustomTabPanel>
               </div>
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={2}>
-              <div className="blog-posts">
-                {posts.map((post) => (
-                  <Post key={post.id} post={post} />
-                ))}
-              </div>
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={3}>
-              <div className="blog-posts">
-                {posts.map((post) => (
-                  <Post key={post.id} post={post} />
-                ))}
-              </div>
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={4}>
-              <div className="blog-posts">
-                {posts.map((post) => (
-                  <Post key={post.id} post={post} />
-                ))}
-              </div>
-            </CustomTabPanel>
+            )}
           </Box>
         </div>
         <div className="home-suggestions-container">
           <h3>Staff Picks</h3>
           <div>
             {posts.slice(0, 2).map((post) => (
-              <Picks key={post.id} post={post} />
+              <Picks key={post._id} post={post} />
             ))}
           </div>
           <span className="picks-btn">see the full list</span>
+
           <div className="recommended-topics">
             <h3>Recommended Topics</h3>
             <div className="chips">
-              <Chip className="chip" label="Full Stack Development" />
-              <Chip className="chip" label="Python" />
-              <Chip className="chip" label="Suits" />
-              <Chip className="chip" label="Originals" />
-              <Chip className="chip" label="Flutter" />
-              <Chip className="chip" label="React native" />
-              <Chip className="chip" label="Agile" />
-              <Chip className="chip" label="Waterfall" />
+              <Chip
+                className="chip"
+                label="Originals"
+                onClick={() => handleChipClick("originals")}
+              />
+              <Chip
+                className="chip"
+                label="Javascript"
+                onClick={() => handleChipClick("javascript")}
+              />
+              <Chip
+                className="chip"
+                label="React"
+                onClick={() => handleChipClick("react")}
+              />
+              <Chip
+                className="chip"
+                label="Web Development"
+                onClick={() => handleChipClick("web development")}
+              />
             </div>
           </div>
+
           <div>
             <h3>Reading list</h3>
             <p>

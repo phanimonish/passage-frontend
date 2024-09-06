@@ -5,6 +5,12 @@
   width: 60%;
   padding: 1rem 3rem;
 }
+.homepage-posts {
+  min-height: 500px !important;
+}
+.MuiCircularProgress-colorPrimary {
+  color: black !important;
+}
 .add-icon {
   margin: 1.1rem;
   cursor: pointer;
@@ -63,7 +69,7 @@
   flex-wrap: wrap;
 }
 .chip {
-  margin: 0.5rem;
+  margin: 0.5rem !important;
   padding: 1.25rem 0rem !important;
 }
 @media only screen and (max-width: 900px) {

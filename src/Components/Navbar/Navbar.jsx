@@ -20,14 +20,27 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
 function Navbar() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorElNotifications, setAnchorElNotifications] =
+    React.useState(null);
+  const [anchorElAccount, setAnchorElAccount] = React.useState(null);
   const navigate = useNavigate();
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const openNotifications = Boolean(anchorElNotifications);
+  const openAccount = Boolean(anchorElAccount);
+  const handleClickNotifications = (event) => {
+    setAnchorElNotifications(event.currentTarget);
+    setAnchorElAccount(null); // Close account menu if open
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+
+  const handleClickAccount = (event) => {
+    setAnchorElAccount(event.currentTarget);
+    setAnchorElNotifications(null); // Close notifications menu if open
+  };
+  const handleCloseNotifications = () => {
+    setAnchorElNotifications(null);
+  };
+
+  const handleCloseAccount = () => {
+    setAnchorElAccount(null);
   };
   const handleLogout = () => {
     Cookies.remove("token");
@@ -83,53 +96,48 @@ function Navbar() {
                 Write
               </Button>
             </Link>
-            <Button className="notifications" variant="contained">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-                aria-label="Notifications"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  d="M15 18.5a3 3 0 1 1-6 0"
-                ></path>
-                <path
-                  stroke="currentColor"
-                  strokeLinejoin="round"
-                  d="M5.5 10.532V9a6.5 6.5 0 0 1 13 0v1.532c0 1.42.564 2.782 1.568 3.786l.032.032c.256.256.4.604.4.966v2.934a.25.25 0 0 1-.25.25H3.75a.25.25 0 0 1-.25-.25v-2.934c0-.363.144-.71.4-.966l.032-.032A5.35 5.35 0 0 0 5.5 10.532Z"
-                ></path>
-              </svg>
-            </Button>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                textAlign: "center",
-              }}
-            >
-              <Tooltip title="Account settings">
+            <Box>
+              <Tooltip title="Notifications">
                 <IconButton
-                  onClick={handleClick}
+                  onClick={handleClickNotifications}
                   size="small"
                   sx={{ ml: 2 }}
-                  aria-controls={open ? "account-menu" : undefined}
+                  aria-controls={
+                    openNotifications ? "notifications-menu" : undefined
+                  }
                   aria-haspopup="true"
-                  aria-expanded={open ? "true" : undefined}
+                  aria-expanded={openNotifications ? "true" : undefined}
                 >
-                  <Avatar sx={{ width: 38, height: 38 }}></Avatar>
+                  <svg
+                    className="notifications"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    aria-label="Notifications"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      d="M15 18.5a3 3 0 1 1-6 0"
+                    ></path>
+                    <path
+                      stroke="currentColor"
+                      strokeLinejoin="round"
+                      d="M5.5 10.532V9a6.5 6.5 0 0 1 13 0v1.532c0 1.42.564 2.782 1.568 3.786l.032.032c.256.256.4.604.4.966v2.934a.25.25 0 0 1-.25.25H3.75a.25.25 0 0 1-.25-.25v-2.934c0-.363.144-.71.4-.966l.032-.032A5.35 5.35 0 0 0 5.5 10.532Z"
+                    ></path>
+                  </svg>{" "}
                 </IconButton>
               </Tooltip>
             </Box>
             <Menu
-              anchorEl={anchorEl}
-              id="account-menu"
-              open={open}
-              onClose={handleClose}
-              onClick={handleClose}
+              anchorEl={anchorElNotifications}
+              id="notifications-menu"
+              disableScrollLock={true}
+              open={openNotifications}
+              onClose={handleCloseNotifications}
+              onClick={handleCloseNotifications}
               PaperProps={{
                 elevation: 0,
                 sx: {
@@ -159,20 +167,80 @@ function Navbar() {
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-              <MenuItem onClick={handleClose}>
+              <MenuItem onClick={handleCloseNotifications}>
+                No Notifications
+              </MenuItem>
+            </Menu>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                textAlign: "center",
+              }}
+            >
+              <Tooltip title="Account settings">
+                <IconButton
+                  onClick={handleClickAccount}
+                  size="small"
+                  sx={{ ml: 2 }}
+                  aria-controls={openAccount ? "account-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={openAccount ? "true" : undefined}
+                >
+                  <Avatar sx={{ width: 38, height: 38 }}></Avatar>
+                </IconButton>
+              </Tooltip>
+            </Box>
+            <Menu
+              anchorEl={anchorElAccount}
+              id="account-menu"
+              disableScrollLock={true}
+              open={openAccount}
+              onClose={handleCloseAccount}
+              onClick={handleCloseAccount}
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  overflow: "visible",
+                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                  mt: 1.5,
+                  "& .MuiAvatar-root": {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  "&::before": {
+                    content: '""',
+                    display: "block",
+                    position: "absolute",
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: "background.paper",
+                    transform: "translateY(-50%) rotate(45deg)",
+                    zIndex: 0,
+                  },
+                },
+              }}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            >
+              <MenuItem onClick={handleCloseAccount}>
                 <Avatar /> Profile
               </MenuItem>
-              <MenuItem onClick={handleClose}>
+              <MenuItem onClick={handleCloseAccount}>
                 <Avatar /> My account
               </MenuItem>
               <Divider />
-              <MenuItem onClick={handleClose}>
+              <MenuItem onClick={handleCloseAccount}>
                 <ListItemIcon>
                   <PersonAdd fontSize="small" />
                 </ListItemIcon>
                 Add another account
               </MenuItem>
-              <MenuItem onClick={handleClose}>
+              <MenuItem onClick={handleCloseAccount}>
                 <ListItemIcon>
                   <Settings fontSize="small" />
                 </ListItemIcon>

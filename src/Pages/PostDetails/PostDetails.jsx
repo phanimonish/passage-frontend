@@ -58,7 +58,7 @@ function PostDetails() {
         <Divider style={{ marginTop: "2rem" }} />
         <div>
           <div className="post-details">
-            <div className="post-details-left" style={{ width: "15%" }}>
+            <div className="post-details-left post-cmmts-claps">
               <div style={{ display: "flex", alignItems: "center" }}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

@@ -23,7 +23,7 @@ export default function Post({ post }) {
             <div className="post-details">
               <div className="post-details-left">
                 <p>{post.date}</p>
-                <div>
+                <div style={{ display: "flex", alignItems: "center" }}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -40,7 +40,7 @@ export default function Post({ post }) {
                   </svg>
                   {post.claps}
                 </div>
-                <div>
+                <div style={{ display: "flex", alignItems: "center" }}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"

@@ -61,7 +61,6 @@ export default function Login() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (!data.err) {
           const token = data.token;
           Cookies.set("token", token);
