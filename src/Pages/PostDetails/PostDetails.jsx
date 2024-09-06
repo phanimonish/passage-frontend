@@ -5,6 +5,7 @@ import "./PostDetails.css";
 import Navbar from "../../Components/Navbar/Navbar";
 import Avatar from "@mui/material/Avatar";
 import { Divider } from "@mui/material";
+import CircularProgress from "@mui/material";
 
 function PostDetails() {
   const location = useLocation();
@@ -29,7 +30,18 @@ function PostDetails() {
     }
   }, [location.state]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
   if (!post) return <div>Post not found</div>;
 
   const renderDescription = (description) => {
