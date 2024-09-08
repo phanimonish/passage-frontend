@@ -14,6 +14,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
+import { Divider } from "@mui/material";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -144,7 +145,7 @@ export default function HomePage() {
                     label="For you"
                     {...a11yProps(0)}
                     sx={{
-                      fontWeight: value === 0 ? 'bold' : 'normal',
+                      fontWeight: value === 0 ? "bold" : "normal",
                     }}
                   />
                   <Tab
@@ -152,7 +153,7 @@ export default function HomePage() {
                     label="Originals"
                     {...a11yProps(1)}
                     sx={{
-                      fontWeight: value === 1 ? 'bold' : 'normal',
+                      fontWeight: value === 1 ? "bold" : "normal",
                     }}
                   />
                   <Tab
@@ -160,7 +161,7 @@ export default function HomePage() {
                     label="Javascript"
                     {...a11yProps(2)}
                     sx={{
-                      fontWeight: value === 2 ? 'bold' : 'normal',
+                      fontWeight: value === 2 ? "bold" : "normal",
                     }}
                   />
                   <Tab
@@ -168,7 +169,7 @@ export default function HomePage() {
                     label="React"
                     {...a11yProps(3)}
                     sx={{
-                      fontWeight: value === 3 ? 'bold' : 'normal',
+                      fontWeight: value === 3 ? "bold" : "normal",
                     }}
                   />
                   <Tab
@@ -176,7 +177,7 @@ export default function HomePage() {
                     label="Web Development"
                     {...a11yProps(4)}
                     sx={{
-                      fontWeight: value === 4 ? 'bold' : 'normal',
+                      fontWeight: value === 4 ? "bold" : "normal",
                     }}
                   />
                 </Tabs>
@@ -236,14 +237,20 @@ export default function HomePage() {
           </Box>
         </div>
         <div className="home-suggestions-container">
-          <h3>Staff Picks</h3>
-          <div>
+          <h3>Suggested Posts</h3>
+          <div className="suggested-posts">
             {posts.slice(0, 2).map((post) => (
-              <Picks key={post._id} post={post} />
+              <Picks
+                key={post._id}
+                post={post}
+                onClick={() =>
+                  navigate(`/post`, { state: { postId: post._id } })
+                }
+              />
             ))}
           </div>
-          <span className="picks-btn">see the full list</span>
 
+          <Divider />
           <div className="recommended-topics">
             <h3>Recommended Topics</h3>
             <div className="chips">

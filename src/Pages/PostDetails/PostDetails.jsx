@@ -13,7 +13,6 @@ function PostDetails() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Extract postId from location state
     const { postId } = location.state || {};
 
     if (postId) {
@@ -37,6 +36,7 @@ function PostDetails() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          minHeight: "100vh",
         }}
       >
         <CircularProgress />

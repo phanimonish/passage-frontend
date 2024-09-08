@@ -55,22 +55,20 @@
 .css-19kzrtu {
   padding: 0% !important;
 }
-.picks-btn {
-  color: #1a8917;
-  position: relative;
-  top: 1rem;
-  cursor: pointer;
+.suggested-posts{
+  margin: 1rem 0rem;
 }
-.recommended-topics {
-  padding: 1.5rem 0rem;
-}
+
 .chips {
   display: flex;
   flex-wrap: wrap;
 }
 .chip {
-  margin: 0.5rem !important;
+  margin: 0.25rem 0.5rem 0.25rem 0rem !important;
   padding: 1.25rem 0rem !important;
+}
+.css-145v6pe-MuiButtonBase-root-MuiTabScrollButton-root.Mui-disabled{
+  display: none !important;
 }
 @media only screen and (max-width: 900px) {
   .home-blog-posts {

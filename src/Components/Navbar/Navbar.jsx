@@ -96,7 +96,7 @@ function Navbar() {
                 Write
               </Button>
             </Link>
-            <Box>
+            <Box className="notifications">
               <Tooltip title="Notifications">
                 <IconButton
                   onClick={handleClickNotifications}
@@ -109,7 +109,6 @@ function Navbar() {
                   aria-expanded={openNotifications ? "true" : undefined}
                 >
                   <svg
-                    className="notifications"
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
                     height="24"

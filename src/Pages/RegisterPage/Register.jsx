@@ -54,7 +54,6 @@ export default function Register() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(JSON.stringify({ username, password, email }));
     fetch(`https://passage-backend.onrender.com/api/auth/register`, {
       method: "POST",
       headers: {

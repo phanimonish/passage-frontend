@@ -153,7 +153,7 @@ export default function NewStory() {
                       aria-haspopup="true"
                       aria-expanded={open ? "true" : undefined}
                     >
-                      <Avatar sx={{ width: 38, height: 38 }}>M</Avatar>
+                      <Avatar sx={{ width: 38, height: 38 }}></Avatar>
                     </IconButton>
                   </Tooltip>
                 </Box>
