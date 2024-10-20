@@ -67,6 +67,14 @@
   text-transform: inherit !important;
   box-shadow: none !important;
 }
+.account {
+  flex-direction: column !important;
+  padding: 0.75rem !important;
+  color: #000 !important;
+}
+.account:hover {
+  background: none !important;
+}
 @media only screen and (max-width: 900px) {
   .write-btn {
     display: none !important;
@@ -82,7 +90,7 @@
   .nav-left-content {
     width: 100%;
   }
-  .search-container{
+  .search-container {
     padding: 0rem 0.5rem;
   }
 }

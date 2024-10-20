@@ -1,40 +1,56 @@
-import * as React from "react";
+// Navbar.jsx
+import React from "react";
 import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import "./Navbar.css";
 import { Tooltip } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
-import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import ManageAccountsRoundedIcon from "@mui/icons-material/ManageAccountsRounded";
+import Box from "@mui/material/Box";
 
-function Navbar() {
+function Navbar({ onSearch }) {
   const [anchorElNotifications, setAnchorElNotifications] =
     React.useState(null);
   const [anchorElAccount, setAnchorElAccount] = React.useState(null);
   const navigate = useNavigate();
   const openNotifications = Boolean(anchorElNotifications);
   const openAccount = Boolean(anchorElAccount);
+
   const handleClickNotifications = (event) => {
     setAnchorElNotifications(event.currentTarget);
     setAnchorElAccount(null); // Close account menu if open
   };
 
+  const token = Cookies.get("token");
+  let username;
+
+  if (token) {
+    try {
+      // Assuming you have a function to decode the token
+      const decode = JSON.parse(atob(token.split('.')[1]));
+      username = decode.username;
+    } catch (error) {
+      console.error("Invalid token:", error);
+      Cookies.remove("token");
+      navigate("/");
+    }
+  }
+
   const handleClickAccount = (event) => {
     setAnchorElAccount(event.currentTarget);
     setAnchorElNotifications(null); // Close notifications menu if open
   };
+
   const handleCloseNotifications = () => {
     setAnchorElNotifications(null);
   };
@@ -42,11 +58,37 @@ function Navbar() {
   const handleCloseAccount = () => {
     setAnchorElAccount(null);
   };
+
+  const handleProfileClick = () => {
+    if (token) {
+      navigate("/profile");
+    } else {
+      navigate("/login");
+    }
+  };
+  const handleAccountClick = () => {
+    if (token) {
+      navigate("/my-account");
+    } else {
+      navigate("/login");
+    }
+  };
+
   const handleLogout = () => {
     Cookies.remove("token");
     navigate("/");
-    navigate(0);
+    navigate(0); // Reload the page to reset the state
   };
+
+  // Search functionality
+  const [searchValue, setSearchValue] = React.useState("");
+
+  const handleSearchChange = (event) => {
+    const query = event.target.value;
+    setSearchValue(query);
+    onSearch(query); // Call the handler passed from HomePage
+  };
+
   return (
     <AppBar className="navbar" position="static">
       <Container maxWidth="xl">
@@ -70,7 +112,12 @@ function Navbar() {
                   clipRule="evenodd"
                 ></path>
               </svg>
-              <input placeholder="Search" className="search-input" />
+              <input
+                placeholder="Search"
+                className="search-input"
+                value={searchValue}
+                onChange={handleSearchChange}
+              />
             </div>
           </div>
           <div className="nav-right-content">
@@ -170,23 +217,27 @@ function Navbar() {
                 No Notifications
               </MenuItem>
             </Menu>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                textAlign: "center",
-              }}
-            >
+            <Box>
               <Tooltip title="Account settings">
                 <IconButton
                   onClick={handleClickAccount}
+                  className="account"
                   size="small"
                   sx={{ ml: 2 }}
                   aria-controls={openAccount ? "account-menu" : undefined}
                   aria-haspopup="true"
                   aria-expanded={openAccount ? "true" : undefined}
                 >
-                  <Avatar sx={{ width: 38, height: 38 }}></Avatar>
+                  <Avatar sx={{ width: 32, height: 32 }}></Avatar>
+                  <span
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {username ? username : "Guest"}&#11206;{" "}
+                  </span>
                 </IconButton>
               </Tooltip>
             </Box>
@@ -226,30 +277,18 @@ function Navbar() {
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-              <MenuItem onClick={handleCloseAccount}>
-                <Avatar /> Profile
+              <MenuItem onClick={handleProfileClick}>
+                <PersonRoundedIcon fontSize="small" />
+                <span style={{ marginLeft: "0.5rem" }}> Profile</span>
               </MenuItem>
-              <MenuItem onClick={handleCloseAccount}>
-                <Avatar /> My account
+              <MenuItem onClick={handleAccountClick}>
+                <ManageAccountsRoundedIcon fontSize="small" />{" "}
+                <span style={{ marginLeft: "0.5rem" }}> My Account </span>
               </MenuItem>
               <Divider />
-              <MenuItem onClick={handleCloseAccount}>
-                <ListItemIcon>
-                  <PersonAdd fontSize="small" />
-                </ListItemIcon>
-                Add another account
-              </MenuItem>
-              <MenuItem onClick={handleCloseAccount}>
-                <ListItemIcon>
-                  <Settings fontSize="small" />
-                </ListItemIcon>
-                Settings
-              </MenuItem>
-              <MenuItem onClick={handleLogout}>
-                <ListItemIcon>
-                  <Logout fontSize="small" />
-                </ListItemIcon>
-                Logout
+              <MenuItem onClick={handleLogout }>
+                <Logout fontSize="small" />
+                <span style={{ marginLeft: "0.5rem" }}> Logout </span>
               </MenuItem>
             </Menu>
           </div>
@@ -258,4 +297,5 @@ function Navbar() {
     </AppBar>
   );
 }
+
 export default Navbar;

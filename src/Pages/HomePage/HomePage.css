@@ -11,6 +11,10 @@
 .MuiCircularProgress-colorPrimary {
   color: black !important;
 }
+.Link{
+  color: #000 !important;
+  text-decoration: none !important;
+}
 .add-icon {
   margin: 1.1rem;
   cursor: pointer;
@@ -27,7 +31,7 @@
 
 .text-form {
   text-transform: inherit !important;
-  color: #6b6b6b !important;
+  color: #000 !important;
   height: 60px;
 }
 

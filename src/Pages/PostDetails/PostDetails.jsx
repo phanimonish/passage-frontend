@@ -6,8 +6,31 @@ import Navbar from "../../Components/Navbar/Navbar";
 import Avatar from "@mui/material/Avatar";
 import { Divider } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 function PostDetails() {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+  const token = Cookies.get("token");
+  const decode = token ? jwtDecode(token) : null;
+  const username = decode ? decode.username : null;
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const location = useLocation();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -17,7 +40,7 @@ function PostDetails() {
 
     if (postId) {
       axios
-        .get(`https://passage-backend.onrender.com/api/post/${postId}`)
+        .get(`http://localhost:5000/api/post/${postId}`)
         .then((response) => {
           setPost(response.data);
           setLoading(false);
@@ -53,6 +76,28 @@ function PostDetails() {
     ));
   };
 
+  const handleDelete = () => {
+    const { postId } = location.state || {};
+    if (postId) {
+      axios
+        .delete(`https://passage-backend.onrender.com/api/post/${postId}`)
+        .then(() => {
+          alert("Post deleted successfully");
+          navigate("/home");
+        })
+        .catch((error) => {
+          console.error("Error deleting post:", error);
+        });
+    }
+  };
+
+  const handleEdit = () => {
+    navigate(`/new-story/${post._id}`); // Navigate to NewStory with the postId
+  };
+
+  // Check if token exists and username matches post's author
+  const isOwner = token && username === post.username;
+
   return (
     <div>
       <Navbar />
@@ -71,7 +116,7 @@ function PostDetails() {
         <div>
           <div className="post-details">
             <div className="post-details-left post-cmmts-claps">
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div style={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -104,29 +149,78 @@ function PostDetails() {
                 <p> {post.comments}</p>
               </div>
             </div>
-            <div className="post-details-right">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  fillRule="evenodd"
-                  d="M4.385 12c0 .55.2 1.02.59 1.41.39.4.86.59 1.41.59s1.02-.2 1.41-.59c.4-.39.59-.86.59-1.41s-.2-1.02-.59-1.41a1.93 1.93 0 0 0-1.41-.59c-.55 0-1.02.2-1.41.59-.4.39-.59.86-.59 1.41m5.62 0c0 .55.2 1.02.58 1.41.4.4.87.59 1.42.59s1.02-.2 1.41-.59c.4-.39.59-.86.59-1.41s-.2-1.02-.59-1.41a1.93 1.93 0 0 0-1.41-.59c-.55 0-1.03.2-1.42.59s-.58.86-.58 1.41m5.6 0c0 .55.2 1.02.58 1.41.4.4.87.59 1.43.59s1.03-.2 1.42-.59.58-.86.58-1.41-.2-1.02-.58-1.41a1.93 1.93 0 0 0-1.42-.59c-.56 0-1.04.2-1.43.59s-.58.86-.58 1.41"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-            </div>
+            {isOwner && (
+              <div className="post-details-right">
+                <Tooltip title="Post settings">
+                  <IconButton
+                    className="post-settings"
+                    onClick={handleClick}
+                    size="small"
+                    sx={{ ml: 2 }}
+                    aria-controls={open ? "account-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                  >
+                    <MoreHorizIcon />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  anchorEl={anchorEl}
+                  id="account-menu"
+                  open={open}
+                  onClose={handleClose}
+                  onClick={handleClose}
+                  PaperProps={{
+                    elevation: 0,
+                    sx: {
+                      overflow: "visible",
+                      filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                      mt: 1.5,
+                      "&:before": {
+                        content: '""',
+                        display: "block",
+                        position: "absolute",
+                        top: 0,
+                        right: 14,
+                        width: 10,
+                        height: 10,
+                        bgcolor: "background.paper",
+                        transform: "translateY(-50%) rotate(45deg)",
+                        zIndex: 0,
+                      },
+                    },
+                  }}
+                  transformOrigin={{
+                    horizontal: "right",
+                    vertical: "top",
+                  }}
+                  anchorOrigin={{
+                    horizontal: "right",
+                    vertical: "bottom",
+                  }}
+                >
+                  <MenuItem onClick={handleEdit}>
+                    <ListItemIcon>
+                      <EditRoundedIcon fontSize="small" />
+                    </ListItemIcon>
+                    Edit
+                  </MenuItem>
+                  <MenuItem onClick={handleDelete}>
+                    <ListItemIcon>
+                      <DeleteForeverRoundedIcon fontSize="small" />
+                    </ListItemIcon>
+                    Delete
+                  </MenuItem>
+                </Menu>
+              </div>
+            )}
           </div>
         </div>
         <Divider style={{ marginBottom: "2rem" }} />
 
         <img
           className="post-details-image"
-          src={`https://passage-backend.onrender.com/${post.imageUrl}`}
+          src={`http://localhost:5000/${post.imageUrl}`}
           alt={post.title}
         />
         <p className="post-details-description">

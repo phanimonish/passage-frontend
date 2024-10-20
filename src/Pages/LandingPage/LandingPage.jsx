@@ -12,10 +12,10 @@ import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
 import { AppBar, Container, Toolbar, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
-
   return (
     <div
       role="tabpanel"
@@ -47,6 +47,7 @@ export default function HomePage() {
   const [value, setValue] = useState(0); // Active tab index
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const navigate = useNavigate();
 
   const getCategoryFromIndex = (index) => {
     switch (index) {
@@ -108,11 +109,11 @@ export default function HomePage() {
       <AppBar className="navbar" position="static">
         <Container maxWidth="xl">
           <Toolbar className="navbar-box" disableGutters>
-            <div className="nav-left-content" style={{width: "60%"}}>
+            <div className="nav-left-content" style={{ width: "60%" }}>
               <h2 className="logo">Passage</h2>
             </div>
             <div className="nav-right-content">
-              <Button className="login-btn" href="/login" variant="outlined" >
+              <Button className="login-btn" href="/login" variant="outlined">
                 Log In
               </Button>
             </div>
@@ -146,7 +147,7 @@ export default function HomePage() {
                     label="For you"
                     {...a11yProps(0)}
                     sx={{
-                      fontWeight: value === 0 ? 'bold' : 'normal',
+                      fontWeight: value === 0 ? "bold" : "normal",
                     }}
                   />
                   <Tab
@@ -154,7 +155,7 @@ export default function HomePage() {
                     label="Originals"
                     {...a11yProps(1)}
                     sx={{
-                      fontWeight: value === 1 ? 'bold' : 'normal',
+                      fontWeight: value === 1 ? "bold" : "normal",
                     }}
                   />
                   <Tab
@@ -162,7 +163,7 @@ export default function HomePage() {
                     label="Javascript"
                     {...a11yProps(2)}
                     sx={{
-                      fontWeight: value === 2 ? 'bold' : 'normal',
+                      fontWeight: value === 2 ? "bold" : "normal",
                     }}
                   />
                   <Tab
@@ -170,7 +171,7 @@ export default function HomePage() {
                     label="React"
                     {...a11yProps(3)}
                     sx={{
-                      fontWeight: value === 3 ? 'bold' : 'normal',
+                      fontWeight: value === 3 ? "bold" : "normal",
                     }}
                   />
                   <Tab
@@ -178,7 +179,7 @@ export default function HomePage() {
                     label="Web Development"
                     {...a11yProps(4)}
                     sx={{
-                      fontWeight: value === 4 ? 'bold' : 'normal',
+                      fontWeight: value === 4 ? "bold" : "normal",
                     }}
                   />
                 </Tabs>
@@ -238,12 +239,16 @@ export default function HomePage() {
           </Box>
         </div>
         <div className="home-suggestions-container">
-          <h3>Staff Picks</h3>
-          <div>
-            {posts.slice(0, 2).map((post) => (
-              <Picks key={post._id} post={post} />
-            ))}
-          </div>
+          <h3>Suggested Posts</h3>
+          {posts.slice(0, 2).map((post) => (
+            <Picks
+              key={post._id}
+              post={post}
+              onClick={() =>
+                navigate(`/post-details`, { state: { postId: post._id } })
+              }
+            />
+          ))}
           <span className="picks-btn">see the full list</span>
 
           <div className="recommended-topics">

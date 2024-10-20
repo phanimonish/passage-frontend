@@ -1,0 +1,27 @@
+.my-account-container {
+  padding: 2rem;
+  display: flex;
+}
+.my-account-left-container {
+  width: 100% !important;
+}
+.avatar-head {
+  display: flex;
+  align-items: center;
+}
+.user-details {
+  display: flex;
+  margin: 1rem 0rem;
+}
+.disabled-textfield {
+  width: 20rem;
+  margin-left: 5rem !important;
+}
+.user-head {
+  width: 5rem;
+}
+.my-account-right-container {
+  border-left: 1px solid lightgray;
+  padding: 0rem 2rem;
+  min-height: auto;
+}

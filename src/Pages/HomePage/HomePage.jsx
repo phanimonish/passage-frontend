@@ -1,3 +1,4 @@
+// HomePage.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../Components/Navbar/Navbar";
@@ -10,7 +11,6 @@ import Post from "../../Components/Post/Post";
 import Picks from "../../Components/Picks/Picks";
 import Chip from "@mui/material/Chip";
 import { Link } from "react-router-dom";
-import Cookies from "js-cookie";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
@@ -47,9 +47,11 @@ function a11yProps(index) {
 
 export default function HomePage() {
   const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
   const [value, setValue] = useState(0); // Active tab index
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(""); // Search query state
   const navigate = useNavigate();
 
   const getCategoryFromIndex = (index) => {
@@ -69,6 +71,21 @@ export default function HomePage() {
     }
   };
 
+  const handleSearch = (query) => {
+    setSearchQuery(query.toLowerCase());
+  };
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    setSelectedCategory(getCategoryFromIndex(newValue));
+  };
+
+  const handleChipClick = (category) => {
+    const index = getIndexFromCategory(category);
+    setValue(index); // Set the active tab index
+    setSelectedCategory(category); // Set the category to load posts for
+  };
+
   const getIndexFromCategory = (category) => {
     switch (category) {
       case "originals":
@@ -82,17 +99,6 @@ export default function HomePage() {
       default:
         return 0; // "For you"
     }
-  };
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    setSelectedCategory(getCategoryFromIndex(newValue));
-  };
-
-  const handleChipClick = (category) => {
-    const index = getIndexFromCategory(category);
-    setValue(index); // Set the active tab index
-    setSelectedCategory(category); // Set the category to load posts for
   };
 
   useEffect(() => {
@@ -109,15 +115,25 @@ export default function HomePage() {
   }, [selectedCategory]);
 
   useEffect(() => {
-    const token = Cookies.get("token");
-    if (!token) {
-      navigate("/");
+    // Filter posts based on searchQuery
+    if (searchQuery) {
+      const filtered = posts.filter(
+        (post) =>
+          // Ensure that both title and content exist before calling toLowerCase()
+          (post.title && post.title.toLowerCase().includes(searchQuery)) ||
+          (post.content && post.content.toLowerCase().includes(searchQuery)) ||
+          (post.username &&
+            post.username.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+      setFilteredPosts(filtered);
+    } else {
+      setFilteredPosts(posts);
     }
-  }, [navigate]);
+  }, [searchQuery, posts]);
 
   return (
     <div>
-      <Navbar />
+      <Navbar onSearch={handleSearch} />
       <div className="home-container">
         <div className="home-blog-posts">
           <Box>
@@ -197,39 +213,15 @@ export default function HomePage() {
               </div>
             ) : (
               <div>
-                <CustomTabPanel value={value} index={0}>
+                <CustomTabPanel value={value} index={value}>
                   <div className="blog-posts">
-                    {posts.map((post) => (
-                      <Post key={post._id} post={post} />
-                    ))}
-                  </div>
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={1}>
-                  <div className="blog-posts">
-                    {posts.map((post) => (
-                      <Post key={post._id} post={post} />
-                    ))}
-                  </div>
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={2}>
-                  <div className="blog-posts">
-                    {posts.map((post) => (
-                      <Post key={post._id} post={post} />
-                    ))}
-                  </div>
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={3}>
-                  <div className="blog-posts">
-                    {posts.map((post) => (
-                      <Post key={post._id} post={post} />
-                    ))}
-                  </div>
-                </CustomTabPanel>
-                <CustomTabPanel value={value} index={4}>
-                  <div className="blog-posts">
-                    {posts.map((post) => (
-                      <Post key={post._id} post={post} />
-                    ))}
+                    {filteredPosts.length > 0 ? (
+                      filteredPosts.map((post) => (
+                        <Post key={post._id} post={post} />
+                      ))
+                    ) : (
+                      <p style={{ textAlign: "center" }}>No posts found</p> // Add this line to display when no posts match
+                    )}
                   </div>
                 </CustomTabPanel>
               </div>
@@ -239,12 +231,12 @@ export default function HomePage() {
         <div className="home-suggestions-container">
           <h3>Suggested Posts</h3>
           <div className="suggested-posts">
-            {posts.slice(0, 2).map((post) => (
+            {filteredPosts.slice(0, 2).map((post) => (
               <Picks
                 key={post._id}
                 post={post}
                 onClick={() =>
-                  navigate(`/post`, { state: { postId: post._id } })
+                  navigate(`/post-details`, { state: { postId: post._id } })
                 }
               />
             ))}

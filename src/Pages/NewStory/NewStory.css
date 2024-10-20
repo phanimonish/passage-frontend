@@ -64,11 +64,20 @@
 .category-box {
   margin: 1rem 0rem;
 }
+.category-box:focus{
+  outline: none !important;
+  border: none !important;
+}
+.select-btn{
+  outline: none !important;
+  border: none !important;
+}
 .label {
   color: black !important;
   font-weight: 500 !important;
   padding: 0px !important;
   font-size: 1rem !important;
+  border-color: transparent !important;
 }
 [contentEditable="true"]:empty:not(:focus):before {
   content: attr(data-text);
