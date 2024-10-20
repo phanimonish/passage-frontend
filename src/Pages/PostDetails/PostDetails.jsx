@@ -220,7 +220,7 @@ function PostDetails() {
 
         <img
           className="post-details-image"
-          src={`http://localhost:5000/${post.imageUrl}`}
+          src={`https://passage-backend.onrender.com/${post.imageUrl}`}
           alt={post.title}
         />
         <p className="post-details-description">
