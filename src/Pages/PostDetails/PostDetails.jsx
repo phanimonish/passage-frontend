@@ -40,7 +40,7 @@ function PostDetails() {
 
     if (postId) {
       axios
-        .get(`http://localhost:5000/api/post/${postId}`)
+        .get(`https://passage-backend.onrender.com/api/post/${postId}`)
         .then((response) => {
           setPost(response.data);
           setLoading(false);
