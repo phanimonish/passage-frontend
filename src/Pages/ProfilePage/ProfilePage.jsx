@@ -97,11 +97,7 @@ export default function ProfilePage() {
               <h1 style={{ textTransform: "capitalize", padding: "0rem 1rem" }}>
                 {username}
               </h1>
-              {bioLoading ? (
-                <CircularProgress />
-              ) : (
                 <p style={{ padding: "0rem 1rem", fontSize: "16px" }}></p>
-              )}
             </Box>
           </div>
           <Box>
